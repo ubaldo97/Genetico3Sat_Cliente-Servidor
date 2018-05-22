@@ -38,7 +38,7 @@ public class GeneticoSatV1 extends Conexion{
         this.numGeneraciones = numGeneraciones;
         this.pobActual = new Poblacion(tamPob);
         this.porMuestra = 20;
-        
+            
     }
      
     
