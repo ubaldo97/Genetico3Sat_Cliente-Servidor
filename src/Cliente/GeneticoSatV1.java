@@ -29,11 +29,10 @@ public class GeneticoSatV1 extends Conexion{
     private Poblacion pobActual;
     private int porMuestra;
 
-//    public GeneticoSatV1() throws IOException{
-//        super("cliente");    
-//     }
+  
     
-    public GeneticoSatV1(int tamPob, double probMuta, int numGeneraciones) {
+    public GeneticoSatV1(int tamPob, double probMuta, int numGeneraciones) throws IOException {
+        super("cliente");  
         this.tamPob = tamPob;
         this.probMuta = probMuta;
         this.numGeneraciones = numGeneraciones;
