@@ -65,7 +65,6 @@ public class Herramientas {
                         e[x] = Integer.parseInt(lista2.get(x));
                     }
                     listaChida.add(i, e);
-                    System.out.println();
                     lista2.clear();
                 }
                 

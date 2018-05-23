@@ -8,11 +8,13 @@ package Servidor;
 import Cliente.Individuo;
 import Cliente.Poblacion;
 import Herramientas.Conexion;
+import Herramientas.Herramientas;
 import Herramientas.Mascaras;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,9 +32,14 @@ public class Servidor extends Conexion {
          serv.iniciarServidor();
     }
     public void iniciarServidor() throws ClassNotFoundException{
-     try {
-            
-            cs = ss.accept();
+     try {       
+            cs = ss.accept();                  
+             InputStream is0 = cs.getInputStream();
+                ObjectInputStream entrada0= new ObjectInputStream(is0);
+                ArrayList<Integer[]> cl = (ArrayList<Integer[]>) entrada0.readObject();
+             Individuo.clausulas=cl;
+             
+             
             //Recibir la probabilidad de muta           
              InputStream is = cs.getInputStream();
                 ObjectInputStream entrada= new ObjectInputStream(is);
@@ -43,7 +50,7 @@ public class Servidor extends Conexion {
                 ObjectInputStream entrada2= new ObjectInputStream(is2);
                 int numGeneraciones = (int) entrada2.readObject();
           
-            
+              
             for(int i=0;i<numGeneraciones;i++){
                 //Recibir la cantidad de muestreo
                 InputStream is3 = cs.getInputStream();
@@ -61,18 +68,18 @@ public class Servidor extends Conexion {
                   Individuo madre = Seleccion.seleccionTorneoMax(p);
                   Individuo padre = Seleccion.seleccionAleatoria(p);
                      // cruza
-                    Individuo nuevoi = new Individuo(); 
-                        //    nuevoi= Cruza.cruzaBinaria(mask,madre,padre);
-//                     // muta (evaluar la probabilidad)
-//                    if(Math.random()<=probMuta){
-//                      Muta.mutaAleatoria(nuevoi);
-//                       }
+                    Individuo nuevoi = Cruza.cruzaBinaria(mask,madre,padre);
+                     // muta (evaluar la probabilidad)
+                    if(Math.random()<=probMuta){
+                      Muta.mutaAleatoria(nuevoi);
+                       }
                          //Enviar un objet          
                 salidaCliente= new ObjectOutputStream(cs.getOutputStream());   
                 salidaCliente.writeObject(nuevoi);
                 }
                     
                 }
+            
              ss.close();
              cs.close();
             

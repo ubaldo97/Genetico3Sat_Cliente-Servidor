@@ -46,7 +46,10 @@ public class GeneticoSatV1 extends Conexion{
        public static void main(String args[]) throws IOException{
          try {
              Individuo.clausulas=Herramientas.leeArchivo();
-             GeneticoSatV1 gen = new GeneticoSatV1(65,0.38,25000);
+           
+             
+             
+             GeneticoSatV1 gen = new GeneticoSatV1(65,0.38,5000);
              gen.evolucionar();
          } catch (ClassNotFoundException ex) {
              Logger.getLogger(GeneticoSatV1.class.getName()).log(Level.SEVERE, null, ex);
@@ -56,6 +59,11 @@ public class GeneticoSatV1 extends Conexion{
     }
     
     public void evolucionar() throws IOException, ClassNotFoundException{
+            //enviar las clausulas para que el servidor pueda trabajar
+               ArrayList<Integer[]> cl = new ArrayList();
+             cl = Individuo.clausulas;
+         salidaServidor= new ObjectOutputStream(cs.getOutputStream());     
+         salidaServidor.writeObject(cl);
        
             Poblacion nuevaPoblacion;
             this.pobActual.calcularMayorMenor();
@@ -107,7 +115,7 @@ for(int g=0; g<this.numGeneraciones;g++){
     }
     System.out.println("Mejor "+g+": "+this.pobActual.getMayor().getFitness());
     
-}
+} 
   //cs.close();      
 System.out.println("Mejor mejor: "+mejor.getFitness());
 
