@@ -13,7 +13,7 @@ import java.net.*;
  */
 public class Conexion {
     private final int puerto = 20011;
-    private String host ="localhost";
+    private String host ="192.168.0.13";
     protected ServerSocket ss;
     protected String mensaje;
     protected Socket cs;

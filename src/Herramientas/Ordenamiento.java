@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package Herramientas;
-import Cliente.Individuo;
-import Cliente.Poblacion;
 import java.util.ArrayList;
 
 /**

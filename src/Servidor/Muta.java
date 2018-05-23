@@ -6,7 +6,7 @@
 package Servidor;
 
 import java.util.Random;
-import Cliente.Individuo;
+import Herramientas.Individuo;
 /**
  *
  * @author ruben

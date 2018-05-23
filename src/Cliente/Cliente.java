@@ -5,6 +5,8 @@
  */
 package Cliente;
 
+import Herramientas.Poblacion;
+import Herramientas.Individuo;
 import Herramientas.Conexion;
 import Herramientas.Herramientas;
 import java.io.IOException;

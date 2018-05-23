@@ -5,6 +5,8 @@
  */
 package Cliente;
 
+import Herramientas.Poblacion;
+import Herramientas.Individuo;
 import Herramientas.Mascaras;
 import Herramientas.Grafica;
 import java.util.ArrayList;
@@ -45,17 +47,12 @@ public class GeneticoSatV1 extends Conexion{
     
        public static void main(String args[]) throws IOException{
          try {
-             Individuo.clausulas=Herramientas.leeArchivo();
-           
-             
-             
-             GeneticoSatV1 gen = new GeneticoSatV1(65,0.38,1000);
+             Individuo.clausulas=Herramientas.leeArchivo();     
+             GeneticoSatV1 gen = new GeneticoSatV1(65,0.80,1000);
              gen.evolucionar();
          } catch (ClassNotFoundException ex) {
              Logger.getLogger(GeneticoSatV1.class.getName()).log(Level.SEVERE, null, ex);
-         }
-        
-            
+         }          
     }
     
     public void evolucionar() throws IOException, ClassNotFoundException{
@@ -99,7 +96,7 @@ for(int g=0; g<this.numGeneraciones;g++){
          
     for(int i=cantidadM;i<this.tamPob;i++){
              
-          //Recibir un objeto del servidor
+          //Recibir el nuevo individuo del servidor
                 InputStream is = cs.getInputStream();
                 ObjectInputStream entrada = new ObjectInputStream(is);
                 Individuo nuevoi = (Individuo) entrada.readObject();      

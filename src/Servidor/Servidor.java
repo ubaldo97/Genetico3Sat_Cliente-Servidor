@@ -5,8 +5,8 @@
  */
 package Servidor;
 
-import Cliente.Individuo;
-import Cliente.Poblacion;
+import Herramientas.Individuo;
+import Herramientas.Poblacion;
 import Herramientas.Conexion;
 import Herramientas.Herramientas;
 import Herramientas.Mascaras;
@@ -33,7 +33,8 @@ public class Servidor extends Conexion {
     }
     public void iniciarServidor() throws ClassNotFoundException{
      try {       
-            cs = ss.accept();                  
+            cs = ss.accept();  
+            
              InputStream is0 = cs.getInputStream();
                 ObjectInputStream entrada0= new ObjectInputStream(is0);
                 ArrayList<Integer[]> cl = (ArrayList<Integer[]>) entrada0.readObject();
@@ -71,7 +72,7 @@ public class Servidor extends Conexion {
                     Individuo nuevoi = Cruza.cruzaBinaria(mask,madre,padre);
                      // muta (evaluar la probabilidad)
                     if(Math.random()<=probMuta){
-                      Muta.mutaAleatoria(nuevoi);
+                      nuevoi=Muta.mutaAleatoria(nuevoi);
                        }
                          //Enviar un objet          
                 salidaCliente= new ObjectOutputStream(cs.getOutputStream());   

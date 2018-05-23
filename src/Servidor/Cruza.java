@@ -5,7 +5,7 @@
  */
 package Servidor;
 
-import Cliente.Individuo;
+import Herramientas.Individuo;
 
 /**
  *
