@@ -5,16 +5,17 @@
  */
 package Cliente;
 
+import Herramientas.Mascaras;
 import Herramientas.Grafica;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Herramientas.Herramientas;
-import Servidor.Cruza;
-import Servidor.Muta;
-import Servidor.Seleccion;
+
 import Herramientas.Conexion;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
@@ -24,14 +25,14 @@ import java.net.Socket;
  */
 public class GeneticoSatV1 extends Conexion{
      private int tamPob;
-    private double probMuta;
+    private Double probMuta;
     private int numGeneraciones;
     private Poblacion pobActual;
     private int porMuestra;
 
   
     
-    public GeneticoSatV1(int tamPob, double probMuta, int numGeneraciones) throws IOException {
+    public GeneticoSatV1(int tamPob, Double probMuta, int numGeneraciones) throws IOException {
         super("cliente");  
         this.tamPob = tamPob;
         this.probMuta = probMuta;
@@ -43,26 +44,31 @@ public class GeneticoSatV1 extends Conexion{
      
     
        public static void main(String args[]) throws IOException{
+         try {
              Individuo.clausulas=Herramientas.leeArchivo();
-        GeneticoSatV1 gen = new GeneticoSatV1(65,0.38,25000);
-        gen.evolucionar();
+             GeneticoSatV1 gen = new GeneticoSatV1(65,0.38,25000);
+             gen.evolucionar();
+         } catch (ClassNotFoundException ex) {
+             Logger.getLogger(GeneticoSatV1.class.getName()).log(Level.SEVERE, null, ex);
+         }
         
             
     }
     
-    public void evolucionar(){
-        //try {
+    public void evolucionar() throws IOException, ClassNotFoundException{
+       
             Poblacion nuevaPoblacion;
-            
-            //Individuo lectura = Herramientas.sacarMejor();
-            
-            //this.pobActual.getIndividuos().add(lectura);
             this.pobActual.calcularMayorMenor();
-            Individuo mejor = this.pobActual.getMayor();
-            
+            Individuo mejor = this.pobActual.getMayor();          
             ArrayList<Integer> datosG = new ArrayList<>();
             
+             //Enviar la probabilidad de muta
+         salidaServidor= new ObjectOutputStream(cs.getOutputStream());     
+         salidaServidor.writeObject(probMuta);
             
+         //Enviar el numero de generaciones
+         salidaServidor= new ObjectOutputStream(cs.getOutputStream());     
+         salidaServidor.writeObject(numGeneraciones);
             
             
 // agregar el ciclo para las generaciones
@@ -72,21 +78,23 @@ for(int g=0; g<this.numGeneraciones;g++){
     nuevaPoblacion = new Poblacion();
     // generar el muestreo
     int cantidadM = (int)(this.tamPob*this.porMuestra/100);
-    //generarMuestreo(cantidadM,nuevaPoblacion);
     nuevaPoblacion.recibirMuestra(this.pobActual.generarGrupoAleatorio(cantidadM));
     
-    int[] mask = Mascaras.generarMascaraAleatoria(100);
+     //Enviar la cantidad de muestreo
+         salidaServidor= new ObjectOutputStream(cs.getOutputStream());     
+         salidaServidor.writeObject(cantidadM);
+    
+    
+      //Enviar la población actual
+         salidaServidor= new ObjectOutputStream(cs.getOutputStream());     
+         salidaServidor.writeObject(pobActual);
+         
     for(int i=cantidadM;i<this.tamPob;i++){
-       
-        // seleccionar a una madre y un padre
-        Individuo madre = Seleccion.seleccionTorneoMax(pobActual);
-        Individuo padre = Seleccion.seleccionRuleta(pobActual);
-        // cruza
-        Individuo nuevoi = Cruza.cruzaBinaria(mask,padre, madre);
-        // muta (evaluar la probabilidad)
-        if(Math.random()<=this.probMuta){
-            Muta.mutaAleatoria(nuevoi);
-        }
+             
+          //Recibir un objeto del servidor
+                InputStream is = cs.getInputStream();
+                ObjectInputStream entrada = new ObjectInputStream(is);
+                Individuo nuevoi = (Individuo) entrada.readObject();      
         // agregamos el individuo a la nueva poblacion
         nuevaPoblacion.getIndividuos().add(nuevoi);
     }
@@ -100,7 +108,7 @@ for(int g=0; g<this.numGeneraciones;g++){
     System.out.println("Mejor "+g+": "+this.pobActual.getMayor().getFitness());
     
 }
-        
+  //cs.close();      
 System.out.println("Mejor mejor: "+mejor.getFitness());
 
          try {

@@ -56,7 +56,7 @@ public class Individuo implements Serializable {
       // recorrer las diferentes clausulas 
       for (Integer[] c: this.clausulas){
       boolean resultado  = verificarClausula(c);
-      if(resultado)this.fitness++;
+      if(resultado){this.fitness++;}
       }
     
     }

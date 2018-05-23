@@ -18,12 +18,7 @@ public class Seleccion {
         return pob.getIndividuos().get(ran.nextInt(pob.getIndividuos().size()));
 
     }
-    
-    public static Individuo seleccionTorneoTSP(Poblacion pob){
-       pob.calcularMayorMenor();
-       return pob.getMayor();
-    }
-    
+      
       public static Individuo seleccionRuleta(Poblacion pob){
       
         double pos = pob.getFitnessPoblacion()*Math.random();
@@ -46,12 +41,6 @@ public class Seleccion {
       return pob.getMayor();
     }
     
-    public static Individuo seleccionTorneoMin(Poblacion pob){
-      if (pob.getMayor() ==null || pob.getMenor()==null){
-       pob.calcularMayorMenor();
-      }
-      return pob.getMenor();
-    }
     
     
 }
