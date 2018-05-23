@@ -66,7 +66,7 @@ public class Servidor extends Conexion {
                 for(int j=cantidadM;j<p.getIndividuos().size();j++){
                     
                   Individuo madre = Seleccion.seleccionTorneoMax(p);
-                  Individuo padre = Seleccion.seleccionAleatoria(p);
+                  Individuo padre = Seleccion.seleccionRuleta(p);
                      // cruza
                     Individuo nuevoi = Cruza.cruzaBinaria(mask,madre,padre);
                      // muta (evaluar la probabilidad)

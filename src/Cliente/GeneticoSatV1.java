@@ -49,7 +49,7 @@ public class GeneticoSatV1 extends Conexion{
            
              
              
-             GeneticoSatV1 gen = new GeneticoSatV1(65,0.38,5000);
+             GeneticoSatV1 gen = new GeneticoSatV1(65,0.38,1000);
              gen.evolucionar();
          } catch (ClassNotFoundException ex) {
              Logger.getLogger(GeneticoSatV1.class.getName()).log(Level.SEVERE, null, ex);
@@ -109,10 +109,10 @@ for(int g=0; g<this.numGeneraciones;g++){
     // actualizamos la población actual
     
     this.pobActual = new Poblacion(nuevaPoblacion);
-    if (this.pobActual.getMayor().getFitness()>mejor.getFitness()) {
+   // if (this.pobActual.getMayor().getFitness()>mejor.getFitness()) {
         mejor = this.pobActual.getMayor();
         datosG.add(mejor.getFitness());
-    }
+    //}
     System.out.println("Mejor "+g+": "+this.pobActual.getMayor().getFitness());
     
 } 
